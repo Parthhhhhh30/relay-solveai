@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#151d2b"/>
+<meta name="description" content="RELAY: a synthetic enterprise operations readiness prototype for access lifecycle and customer assurance."/>
+<title>RELAY — Operations Readiness</title><link rel="icon" href="/favicon.svg"/><link rel="stylesheet" href="/style.css"/>
+</head><body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="shell">
+  <aside class="side" id="sidebar" aria-label="Navigation">
+    <div class="brand"><div class="brand-icon">R<span>.</span></div><div><strong>RELAY</strong><small>OPERATIONS READINESS</small></div></div>
+    <div class="workspace-label">WORKSPACE <span class="work-dot"></span></div>
+    <div class="workspace">Independent demo<br/><small>Synthetic organisation</small></div>
+    <nav aria-label="Main navigation" id="navigation">
+      <button class="nav active" data-page="overview"><span class="nav-icon">◫</span> Overview</button>
+      <button class="nav" data-page="people"><span class="nav-icon">♙</span> People & access</button>
+      <button class="nav" data-page="reviews"><span class="nav-icon">▦</span> Customer assurance</button>
+      <button class="nav" data-page="evidence"><span class="nav-icon">◇</span> Evidence library</button>
+      <button class="nav" data-page="operations"><span class="nav-icon">☷</span> Business operations</button>
+      <button class="nav" data-page="activity"><span class="nav-icon">◷</span> Audit trail</button>
+    </nav>
+    <div class="side-bottom"><div class="prototype-chip"><span class="work-dot"></span> FUNCTIONAL PROTOTYPE</div><small><span id="storageLabel">Loading storage status…</span><br/>No real systems connected</small><button id="resetDemo" class="side-reset">↺ Reset synthetic demo</button></div>
+  </aside>
+  <div class="main-col">
+    <header class="topbar"><button id="menuToggle" class="mobile-menu" aria-label="Toggle navigation">☰</button><span class="breadcrumb">WORKSPACE <span class="separator">/</span> <b id="crumb">Overview</b></span><div class="top-right"><span class="today" id="today">—</span><span class="avatar">OP</span></div></header>
+    <main id="main" tabindex="-1"><div class="loading">Loading workspace…</div></main>
+    <footer class="footer">RELAY is an independent portfolio demonstration, not SolveAI software. All records, people, customers and evidence references are fictional. Recorded approvals do not verify identity or compliance.</footer>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><div class="eyebrow">OPERATOR ACTION</div><h2 id="modalTitle">—</h2></div><button class="icon-button" id="modalClose" aria-label="Close dialog">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-foot" id="modalFoot"></div></div></div>
+<script type="module" src="/app.js"></script>
+</body></html>

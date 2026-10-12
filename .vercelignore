@@ -1,0 +1,10 @@
+.git
+data
+tests
+node_modules
+.env*
+QA_REPORT.md
+test-results
+coverage
+*.sqlite*
+*.log

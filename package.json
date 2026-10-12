@@ -1,0 +1,26 @@
+{
+  "name": "relay-enterprise-ops",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Independent synthetic operations portfolio demo designed for a SolveAI Operations application",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local src/server.js",
+    "dev": "node --env-file-if-exists=.env.local --watch src/server.js",
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/server.js && node --check src/service.js && node --check src/db.js && node --check public/app.js && node --check src/storage.js && node --check scripts/migrate.js && node --check api/index.js",
+    "migrate": "node --env-file-if-exists=.env.local scripts/migrate.js",
+    "test:http": "python3 tests/http-smoke.py",
+    "test:browser": "node tests/browser.mjs",
+    "test:postgres": "node --env-file-if-exists=.env.local tests/postgres-live.mjs"
+  },
+  "dependencies": {
+    "pg": "8.16.3"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}
