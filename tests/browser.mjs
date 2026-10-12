@@ -6,6 +6,14 @@ const base=process.env.BASE_URL||'http://127.0.0.1:3000';
 const browser=await chromium.launch();
 await fs.mkdir('test-results',{recursive:true});
 const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+// Authenticated CLI response headers stay in ignored test-results; never log cookies.
+if(process.env.VERCEL_AUTH_COOKIE_FILE){
+  const headers=await fs.readFile(process.env.VERCEL_AUTH_COOKIE_FILE,'utf8');
+  const cookies=[...headers.matchAll(/^set-cookie:\s*([^=;\s]+)=([^;\r\n]*)/gim)]
+    .map(([,name,value])=>({name,value,url:base,httpOnly:true,secure:true,sameSite:'None'}));
+  assert.ok(cookies.length,'Authenticated CLI response must contain a cookie');
+  await context.addCookies(cookies);
+}
 const page=await context.newPage();
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 const click=async(action,id)=>page.locator(`[data-action="${action}"]${id?`[data-id="${id}"]`:''}`).click();

@@ -5,7 +5,7 @@
   "description": "Independent synthetic operations portfolio demo designed for a SolveAI Operations application",
   "type": "module",
   "engines": {
-    "node": ">=22.13"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env.local src/server.js",
@@ -15,7 +15,8 @@
     "migrate": "node --env-file-if-exists=.env.local scripts/migrate.js",
     "test:http": "python3 tests/http-smoke.py",
     "test:browser": "node tests/browser.mjs",
-    "test:postgres": "node --env-file-if-exists=.env.local tests/postgres-live.mjs"
+    "test:postgres": "node --env-file-if-exists=.env.local tests/postgres-live.mjs",
+    "test:production": "node tests/production.mjs"
   },
   "dependencies": {
     "pg": "8.16.3"

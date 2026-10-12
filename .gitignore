@@ -9,4 +9,6 @@ coverage/
 .env*
 !.env.example
 test-results/
+.agents/
+skills-lock.json
 .vercel

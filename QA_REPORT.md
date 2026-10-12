@@ -1,6 +1,6 @@
 # RELAY verification and delivery status
 
-Verified locally on 2026-10-12 with Node.js v24.21.0, npm 11.19.0, PostgreSQL 17 (Docker), Playwright 1.61.1 and Chromium 149. Existing source and prior changes were preserved.
+Verified locally and against hosted Neon/Vercel on 2026-10-12 with Node.js v24.21.0, npm 11.19.0, PostgreSQL 17 (Docker), Playwright 1.61.1 and Chromium 149. Existing source and prior changes were preserved.
 
 ## Passed
 
@@ -20,23 +20,36 @@ Browser testing reproduced a disabled answer approval button after revised sourc
 
 This completes a role-relevant people/access ↔ customer-assurance handoff. Finance, contracts, hiring and GTM remain the existing manual work register; no external action is performed.
 
-## Publication and release gates
+## Hosted release
 
-- Local Git initialized successfully. Target `https://github.com/Parthhhhhh30/relay-solveai` was inspected with `git ls-remote`; no existing refs were reported. No remote work was overwritten.
-- Git HTTPS push was blocked by missing local credentials. Authenticated GitHub connector published all 28 reviewed files to `main` at [a456c85](https://github.com/Parthhhhhh30/relay-solveai/commit/a456c85d7e968efa037592f669feb19bbb5e6788). Its tree `ac072c9c77ace012e2f3c17355aec5e59e68a116` exactly matches local commit `7e1c1f4`; read-only Git fetch confirmed the remote contents. Local and connector commit histories differ; no local work was discarded. Subsequent documentation commits may advance the branch. CLI Git credentials remain unconfigured for future direct pushes.
-- Vercel CLI 63.1.2 authentication succeeded as `parthudnoor3024-6746`. Team `parthhhh` reports the **Hobby** plan.
-- Explicitly created/linked and inspected `parthhhh/relay-solveai` (Node 24.x), project ID `prj_9jd7wieWaHmeMz9YGsKVNEoJ4Z4v`.
-- Vercel connector lacked access to this scope; the authenticated CLI works and was used instead.
-- No existing hosted storage resources were found. CLI help lists Neon `free_v3` as **Free (Free)**. Attempted only that plan, named `relay-solveai-demo`, London region, optional Neon auth disabled.
-- Provisioning stopped with `integration_terms_acceptance_required`. Account owner must review/accept at https://vercel.com/parthhhh/~/integrations/accept-terms/neon?source=cli. No database resource, paid plan or deployed application is claimed.
-- Local `.env.local` contains CLI-provided credentials and is excluded; `.vercel/`, `data/`, node_modules and test-results are excluded. Local SQLite and the local Docker database were not uploaded. Only fictional seed/QA records were used.
+Live public URL: **https://relay-solveai-parthhhh.vercel.app/**. Project: `parthhhh/relay-solveai`, Node 24.x, Vercel Hobby. GitHub: https://github.com/Parthhhhhh30/relay-solveai.
 
-## Remaining work requiring the account step
+- Account-owner Neon terms acceptance was confirmed by successful provisioning. Resource `relay-solveai-demo` (`store_JflDnljTiArQ0NAa`) reports **free_v3 / Free**, London (`lhr1`), no payment method required. No paid plan, upgrade, purchased domain, extra monitoring product or other paid resource was requested.
+- Database URLs were pulled into ignored, mode-600 `.env.local`. Required TLS and pooled application URL were validated without printing credentials. Migrations and isolated live tests used `DATABASE_URL_UNPOOLED`. Migration was run twice, preserving existing state; live Neon concurrency, callback/COMMIT rollback, denied transitions, reconnect durability and shared write-limit tests passed.
+- `RELAY_RESET_TOKEN` was securely generated and stored in Vercel as a **Production Secret**, with a private ignored local operator copy. Real HTTP verifies unauthenticated reset = 403, correct operator reset = 200 and cooldown reset = 429.
+- Full Chromium walkthrough passed on the corrected production-target deployment `relay-solveai-e7bywi3u0-parthhhh.vercel.app`, using authenticated CLI cookies while staging remained protected. Desktop/mobile screenshots were inspected. Existing approval and export gates remained enforced.
+- The complete `test:browser` walkthrough was subsequently repeated on the public production URL without authentication after an operator reset; all lifecycle, invalidation, approval, export and desktop/mobile interactions passed.
+- Public production domain serves HTML/API successfully without Vercel authentication. Standard Protection remains enabled for previews/generated URLs. The temporary automation bypass created by CLI testing was revoked after a settings read unexpectedly printed it; verification confirmed no automation bypass remained. It was never added to Git or application source. No broader Trusted Sources rule was added.
+- `BASE_URL=https://relay-solveai-parthhhh.vercel.app npm run test:production` passed: real synthetic joiner creation, denied readiness, access/device records, activation, source invalidation, CSV questionnaire import, rejected mismatched control/evidence, blocked approvals before source/evidence review, revised source, both fresh approvals, approved-only formula-safe CSV, answer-edit invalidation, offboarding start/denial/revocations/device return/closure, audit records, reset/origin denial and identical repeated reads.
+- A fresh independent connection through the pooled Neon URL matches the public API's people, access, devices, reviews, evidence, questions, tasks and audit history, confirming writes are in the intended durable database.
+- Unauthenticated public Chromium checks passed for all six navigation destinations at 1440×1000 and 390×844, modal fields/Escape, disabled public reset, no document overflow, no page errors or HTTP 5xx responses. Screenshots: ignored `test-results/production-desktop.png` and `test-results/production-mobile.png`.
+- Vercel Git connection to the existing `Parthhhhhh30/relay-solveai` repository succeeded. Local Git HTTPS credentials remain unconfigured; authenticated GitHub connector publication preserves remote history, with source-tree equality checked using read-only Git fetch. Existing local commits are preserved.
+- Secret/artifact exclusions cover `.env*` except empty `.env.example`, `.vercel/`, local databases, node_modules, screenshots/downloads, coverage and provider-installed agent skills. Only synthetic seed/QA records are uploaded.
 
-1. After the owner accepts Neon terms, retry the explicit free-plan installation; inspect the resulting plan/resource and intended project before pulling credentials into ignored `.env.local`.
-2. Run the idempotent migration against that intended hosted database and the isolated live Postgres test. Configure operator reset credential through secret-safe environment input if reset is enabled; keep it out of source/browser code.
-3. Stage production without assigning domains, then verify real desktop/mobile browser flows, exports and durable changes across requests, application instances and redeployment against the same database. Promote only the tested deployment.
-4. Record the actual GitHub commit and production URL. Production HTTP/browser/storage checks are currently **not run**; there is no live URL.
+## Hosted failures fixed
+
+1. Auto-selected Node framework used `src/server.js`, which has named exports, rather than the existing default-export API entrypoint. Runtime logged “Invalid export ... default export must be a function or server.” Setting `framework: null` in `vercel.json` selects `api/index.js`; project framework is now Other. Node is pinned to 24.x. Corrected hosted API/browser tests pass.
+2. Modal closure before the awaited workspace refresh allowed the next rapid submission to hit `busy` and be silently ignored. The modal now closes after refresh, so it stays open until the current interaction is complete. The real hosted sequential browser walkthrough reproduces the failing sequence and passes after the change. Backend business rules were unchanged.
+
+## Final release checks
+
+- Promoted corrected production deployment: `dpl_AdpjpTPLPYboeEDAjTiMn5uUgeCY`, generated URL `https://relay-solveai-ba6a8mcub-parthhhh.vercel.app`, built with the existing API handler on Node 24.x. Production URL remains https://relay-solveai-parthhhh.vercel.app/.
+- A full workspace capture after the public browser walkthrough was **deep-equal** to the new deployment's API response before promotion. People, grants, devices, evidence versions, approval status, questions, tasks and audit records survive redeployment against the same Neon database.
+- Public production HTML/API return HTTP 200 without a bypass credential. All four served assets (`app.js`, `style.css`, `index.html`, `favicon.svg`) match the verified local release byte for byte.
+- Staged secret/artifact scan and `git diff --check` passed. `npm run check`, all **28 tests**, real HTTP smoke, production browser and live database tests pass. New `tests/production.mjs` is a reusable HTTP regression for hosted workflows; `tests/browser.mjs` supports private authentication cookies for protected staging and catches the hosted rapid-submission sequence.
+- CLI deployment log query initially returned no records for the new deployment; this is not a claim of comprehensive runtime monitoring. No HTTP 5xx or page errors were observed in successful release browser/API checks. No log drain, paid monitoring or alerting is configured.
+- The tested application changes are committed locally and mirrored to the existing GitHub branch through the authenticated connector, with read-only Git source-tree verification. Local Git history remains preserved; direct Git HTTPS push still needs local credentials for future use.
+- Private testing credentials and generated screenshots, response captures and CSV downloads remain excluded. Temporary automation bypass credentials are revoked after testing. Public mutations affect synthetic records only; no real system is provisioned, revoked or notified.
 
 ## Architecture and limitations
 

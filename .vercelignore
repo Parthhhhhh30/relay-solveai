@@ -8,3 +8,5 @@ test-results
 coverage
 *.sqlite*
 *.log
+.agents
+skills-lock.json
