@@ -11,6 +11,7 @@ Verified locally on 2026-10-12 with Node.js v24.21.0, npm 11.19.0, PostgreSQL 17
 - Migration ran twice against actual local PostgreSQL 17, preserving the existing workspace.
 - `DATABASE_URL=<local QA database> npm run test:postgres`: live tests pass for separate pools, simultaneous grants with no lost updates, source invalidation, denied lifecycle rollback, callback rollback, an actual deferred unique-constraint failure at COMMIT, fresh connection durability and shared write limit. Tests create and drop an isolated temporary schema; they never reset the configured demo row.
 - `BASE_URL=http://127.0.0.1:3001 npm run test:browser`: real Chromium interaction passes against the Postgres-backed app at 1440×1000 and 390×844. Verifies denied readiness, grants, asset assignment, activation, stale evidence/answer approval gates, revised source reference, fresh evidence-owner and security-reviewer approvals, approved-only CSV download, denied and completed offboarding, reload persistence, all six mobile navigation destinations, no document overflow, mobile GTM task creation/closure and Escape. No page errors observed.
+- A second independent HTTP process on port 3002 sees exactly the same persisted workflow state, including completed offboarding and the mobile task.
 - Screenshots captured and visually inspected at `test-results/desktop.png` and `test-results/mobile.png`; generated screenshots/CSV remain excluded from Git and deployment uploads. This is functional browser verification, not a full accessibility audit or cross-browser certification.
 
 ## Failure fixed
@@ -22,6 +23,7 @@ This completes a role-relevant people/access ↔ customer-assurance handoff. Fin
 ## Publication and release gates
 
 - Local Git initialized successfully. Target `https://github.com/Parthhhhhh30/relay-solveai` was inspected with `git ls-remote`; no existing refs were reported. No remote work was overwritten.
+- Git HTTPS push was blocked by missing local credentials. Authenticated GitHub connector published all 28 reviewed files to `main` at [a456c85](https://github.com/Parthhhhhh30/relay-solveai/commit/a456c85d7e968efa037592f669feb19bbb5e6788). Its tree `ac072c9c77ace012e2f3c17355aec5e59e68a116` exactly matches local commit `7e1c1f4`; read-only Git fetch confirmed the remote contents. Local and connector commit histories differ; no local work was discarded. Subsequent documentation commits may advance the branch. CLI Git credentials remain unconfigured for future direct pushes.
 - Vercel CLI 63.1.2 authentication succeeded as `parthudnoor3024-6746`. Team `parthhhh` reports the **Hobby** plan.
 - Explicitly created/linked and inspected `parthhhh/relay-solveai` (Node 24.x), project ID `prj_9jd7wieWaHmeMz9YGsKVNEoJ4Z4v`.
 - Vercel connector lacked access to this scope; the authenticated CLI works and was used instead.
